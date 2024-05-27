@@ -2,6 +2,8 @@
 
 -Create-react-app
 -Configured Tailwiind CSS
+-Header
+-Sign In and Sign Up form
 
 # Features
 
