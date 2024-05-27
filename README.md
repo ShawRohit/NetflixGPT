@@ -3,7 +3,10 @@
 -Create-react-app
 -Configured Tailwiind CSS
 -Header
--Sign In and Sign Up form
+-Routing
+-Sign Up form
+-Form Vaildation
+-useRef
 
 # Features
 
