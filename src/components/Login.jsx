@@ -1,11 +1,20 @@
 // RAFCE - > React Arrow Function Component Export
 import { useState, useRef } from "react";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { auth } from "../utils/firebase";
 
 import Header from "./Header";
 import { checkValidData } from "../utils/validate";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const [isSignIn, setIsSignIn] = useState(true);
+  const [displayMsgColor, setDisplayMessageColor] = useState("text-red-800");
   const [errorMessage, setErrorMessage] = useState(null);
   const email = useRef(null);
   const password = useRef(null);
@@ -22,6 +31,53 @@ const Login = () => {
       setErrorMessage(isValid);
     } else {
       setErrorMessage(null);
+      if (!isSignIn) {
+        createUserWithEmailAndPassword(
+          auth,
+          email.current.value,
+          password.current.value
+        )
+          .then((userCredential) => {
+            // Signed up
+            const user = userCredential.user;
+            console.log(user);
+            navigate("/browse");
+            setDisplayMessageColor("text-green-700");
+            setErrorMessage("Successfully signed up  ✅");
+            return user;
+            // ...
+          })
+          .catch((error) => {
+            setDisplayMessageColor("text-red-800");
+            console.log(error);
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            setErrorMessage(errorCode + "-" + errorMessage);
+            return errorCode;
+            // ..
+          });
+      } else {
+        signInWithEmailAndPassword(
+          auth,
+          email.current.value,
+          password.current.value
+        )
+          .then((userCredential) => {
+            // Signed in
+            setDisplayMessageColor("text-green-700");
+            setErrorMessage("Successfully sign in  ✅");
+            const user = userCredential.user;
+            navigate("/browse");
+
+            // ...
+          })
+          .catch((error) => {
+            setDisplayMessageColor("text-red-800");
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            setErrorMessage(errorCode + "-" + errorMessage);
+          });
+      }
     }
 
     //SignIn and SignUp
@@ -61,7 +117,7 @@ const Login = () => {
           className="p-2 my-6 w-full bg-gray-700"
           ref={password}
         />
-        <p className="text-red-800 font-bold">{errorMessage}</p>
+        <p className={`${displayMsgColor} font-bold`}>{errorMessage}</p>
         <button
           type="button"
           className="p-2 my-6  bg-red-700 w-full rounded-sm"

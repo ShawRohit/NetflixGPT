@@ -7,6 +7,18 @@
 -Sign Up form
 -Form Vaildation
 -useRef
+-Firebase Configuration
+-Create project in firebase
+-Enable email-password authentication
+-Install firebase CLi
+-Firebase login(Loging to firebase)
+-firebase init(Initializing firebase)
+-firebase deploy(Deploy command)
+-Implement Sign In User API/ Sign Up UserAPI
+-Redux Store created with userSlice
+-Implemented Signout feature
+-Update profile API call
+-Fetch movies from TMDB
 
 # Features
 
